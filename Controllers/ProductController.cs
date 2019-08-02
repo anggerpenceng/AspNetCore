@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using TrySimpleApi.Domain.Product.Entities;
+using TrySimpleApi.Infrastructure.Product.Interfaces;
 using TrySimpleApi.Helpers;
 using TrySimpleApi.Application.Product;
 
@@ -15,17 +16,23 @@ namespace TrySimpleApi.Controllers
     {
         private readonly IResponseBuilder _helpers;
         private readonly IProductService _service;
+        private readonly IProductRepositories _repository;
 
-        public ProductController(IResponseBuilder helper , IProductService service)
+        public ProductController(
+            IResponseBuilder helper, 
+            IProductService service,
+            IProductRepositories repository
+        )
         {
             _helpers = helper;
             _service = service;
+            _repository = repository;
         }
 
         [HttpGet]
         public ActionResult<object> Index()
         {
-            return Ok();
+            return Ok(_repository.Index());
         }
 
         [HttpGet("error")]
@@ -47,6 +54,8 @@ namespace TrySimpleApi.Controllers
             {
                 return StatusCode(500, _helpers.ErrorResponse("Error To create", new string[] { creating.message }));
             }
+
+            
         }
 
     }

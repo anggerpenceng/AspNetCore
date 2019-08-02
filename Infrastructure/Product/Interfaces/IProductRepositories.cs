@@ -4,11 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using TrySimpleApi.Domain.Product.Entities;
 
-
-namespace TrySimpleApi.Application.Product
+namespace TrySimpleApi.Infrastructure.Product.Interfaces
 {
-    public interface IProductService
+    public interface IProductRepositories
     {
-        Task<object> Create(ProductModel model);
+        List<ProductModel> Index();
     }
 }

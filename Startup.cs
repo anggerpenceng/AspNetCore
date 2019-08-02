@@ -12,8 +12,10 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using TrySimpleApi.Helpers;
 using TrySimpleApi.Application.Product;
+using TrySimpleApi.Infrastructure.Product.Interfaces;
+using TrySimpleApi.Infrastructure.Product.Repositories;
 using Microsoft.EntityFrameworkCore;
-using FluentValidation.AspNetCore;
+using System.Web;
 
 namespace TrySimpleApi
 {
@@ -29,10 +31,27 @@ namespace TrySimpleApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2).AddFluentValidation();
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddScoped<IResponseBuilder , ResponseBuilderHelper>();
             services.AddScoped<IProductService , CreateProductService>();
+            services.AddScoped<IProductRepositories , ProductRepositories>();
             services.AddDbContext<ProductContext>(options => options.UseSqlServer(Configuration["ConnectionString:DefaultConnection"]));
+
+            services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.InvalidModelStateResponseFactory = (context) =>
+                {
+                    var errorsList = context.ModelState.Values.SelectMany(x => x.Errors.Select(p => p.ErrorMessage)).ToList();
+                    var result = new
+                    {
+                        status = false,
+                        message = "Validation errors",
+                        errors = errorsList
+                    };
+                    return new BadRequestObjectResult(result);
+                };
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

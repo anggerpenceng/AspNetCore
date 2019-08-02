@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TrySimpleApi.Domain.Product.Entities;
+using TrySimpleApi.Infrastructure.Product.Interfaces;
 using TrySimpleApi.Helpers;
 
 namespace TrySimpleApi.Application.Product
@@ -31,7 +32,7 @@ namespace TrySimpleApi.Application.Product
             }
             catch(Exception err)
             {
-                return new { status = false, message = err.Message };
+                return new { status = false, message = err.ToString() };
             }
 
         }

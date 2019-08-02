@@ -6,10 +6,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace TrySimpleApi.Domain.Product.Entities
 {
-    public class ProductModel
+    public partial class ProductModel
     {
-
         public string Id { get; set; }
+        [Required(ErrorMessage = "field name harus di isi")]
         public string Name { get; set; }
         public string Description { get; set; }
         public DateTime? CreatedAt { get; set; }

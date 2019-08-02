@@ -7,7 +7,7 @@ namespace TrySimpleApi.Helpers
 {
     public partial class ProductContext : DbContext
     {
-        public virtual DbSet<ProductModel> Product { get; set; }
+        public virtual DbSet<ProductModel> ProductModel { get; set; }
 
         public ProductContext()
         {
