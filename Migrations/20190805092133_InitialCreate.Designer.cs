@@ -10,7 +10,7 @@ using TrySimpleApi.Helpers;
 namespace TrySimpleApi.Migrations
 {
     [DbContext(typeof(ProductContext))]
-    [Migration("20190802022339_InitialCreate")]
+    [Migration("20190805092133_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,10 +21,32 @@ namespace TrySimpleApi.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("TrySimpleApi.Domain.Product.Entities.Product", b =>
+            modelBuilder.Entity("TrySimpleApi.Domain.Author.Entities.AuthorModel", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime?>("CreatedAt");
+
+                    b.Property<string>("Name")
+                        .IsRequired();
+
+                    b.Property<string>("Position")
+                        .IsRequired();
+
+                    b.Property<DateTime?>("UpdatedAt");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Authors");
+                });
+
+            modelBuilder.Entity("TrySimpleApi.Domain.Product.Entities.ProductModel", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<Guid?>("AuthorId");
 
                     b.Property<DateTime?>("CreatedAt");
 
@@ -38,7 +60,16 @@ namespace TrySimpleApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("products");
+                    b.HasIndex("AuthorId");
+
+                    b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("TrySimpleApi.Domain.Product.Entities.ProductModel", b =>
+                {
+                    b.HasOne("TrySimpleApi.Domain.Author.Entities.AuthorModel", "Author")
+                        .WithMany("Products")
+                        .HasForeignKey("AuthorId");
                 });
 #pragma warning restore 612, 618
         }

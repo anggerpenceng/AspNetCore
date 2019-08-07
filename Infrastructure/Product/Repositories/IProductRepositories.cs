@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using TrySimpleApi.Domain.Product.Entities;
+using TrySimpleApi.Domain.Product.ViewModels;
 
-namespace TrySimpleApi.Infrastructure.Product.Interfaces
+namespace TrySimpleApi.Infrastructure.Product.DataManagers
 {
     public interface IProductRepositories
     {
-        List<ProductModel> Index();
+        List<ProductViewModel> Index();
     }
 }

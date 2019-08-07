@@ -2,12 +2,15 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using TrySimpleApi.Domain.Product.Entities;
+using TrySimpleApi.Domain.Author.Entities;
 
 namespace TrySimpleApi.Helpers
 {
     public partial class ProductContext : DbContext
     {
-        public virtual DbSet<ProductModel> ProductModel { get; set; }
+        public virtual DbSet<AuthorEntity> AuthorEntities { get; set; }
+
+        public virtual DbSet<ProductEntity> ProductEntities { get; set; }
 
         public ProductContext()
         {
@@ -20,11 +23,11 @@ namespace TrySimpleApi.Helpers
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<ProductModel>(entity =>
+            modelBuilder.Entity<ProductEntity>(entity =>
             {
                 entity.HasKey(e => e.Id);
 
-                entity.ToTable("products");
+                entity.ToTable("Products");
 
                 entity.Property(e => e.Name)
                     .IsRequired();
@@ -37,6 +40,26 @@ namespace TrySimpleApi.Helpers
                 entity.Property(e => e.UpdatedAt);
 
             });
+
+            modelBuilder.Entity<AuthorEntity>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+
+                entity.ToTable("Authors");
+
+                entity.Property(e => e.Name)
+                    .IsRequired();
+
+                entity.Property(e => e.Position)
+                    .IsRequired();
+
+                entity.Property(e => e.CreatedAt);
+
+                entity.Property(e => e.UpdatedAt);
+
+            });
+
+
         }
     }
 }

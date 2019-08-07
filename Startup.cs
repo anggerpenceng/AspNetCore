@@ -12,8 +12,12 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using TrySimpleApi.Helpers;
 using TrySimpleApi.Application.Product;
-using TrySimpleApi.Infrastructure.Product.Interfaces;
-using TrySimpleApi.Infrastructure.Product.Repositories;
+using TrySimpleApi.Infrastructure.Product.DataManagers;
+using TrySimpleApi.Application.Author;
+using TrySimpleApi.Infrastructure.Author.Repositories;
+using TrySimpleApi.Infrastructure.Author.DataManagers;
+using TrySimpleApi.Domain.Author.Entities;
+using TrySimpleApi.Domain.Author.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using System.Web;
 
@@ -34,7 +38,10 @@ namespace TrySimpleApi
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddScoped<IResponseBuilder , ResponseBuilderHelper>();
             services.AddScoped<IProductService , CreateProductService>();
-            services.AddScoped<IProductRepositories , ProductRepositories>();
+            services.AddScoped<IProductRepositories , ProductDAO>();
+            services.AddTransient<IAuthorService<AuthorEntity> , CreateAuthorService>();
+            services.AddTransient<IAuthorService<AuthorDetailViewModel> , UpdateAuthorService>();
+            services.AddScoped<IAuthorRepositories , AuthorDAO>();
             services.AddDbContext<ProductContext>(options => options.UseSqlServer(Configuration["ConnectionString:DefaultConnection"]));
 
             services.Configure<ApiBehaviorOptions>(options =>
@@ -68,7 +75,6 @@ namespace TrySimpleApi
 
             app.UseHttpsRedirection();
             app.UseMvc();
-
         }
     }
 }

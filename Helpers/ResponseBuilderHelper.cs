@@ -10,7 +10,7 @@ namespace TrySimpleApi.Helpers
     public class ResponseBuilderHelper : IResponseBuilder
     {
 
-        public object SuccessResponse(string message, object[] data)
+        public object SuccessResponse(string message, dynamic data)
         {
             return new
             {

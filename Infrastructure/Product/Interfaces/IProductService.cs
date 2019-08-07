@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 using TrySimpleApi.Domain.Product.Entities;
 
 
-namespace TrySimpleApi.Infrastructure.Product.Interfaces
+namespace TrySimpleApi.Infrastructure.Product.DataManagers
 {
     public interface IProductService
     {
-        Task<object> Create(ProductModel model);
+        Task<object> Create(ProductEntity model);
     }
 }

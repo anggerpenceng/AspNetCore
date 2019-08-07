@@ -2,18 +2,22 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TrySimpleApi.Domain.Author.ViewModels;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace TrySimpleApi.Domain.Product.Entities
+
+namespace TrySimpleApi.Domain.Product.ViewModels
 {
-    public partial class ProductModel
+    public class ProductViewModel
     {
         public string Id { get; set; }
-        [Required(ErrorMessage = "field name harus di isi")]
         public string Name { get; set; }
         public string Description { get; set; }
         public DateTime? CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
 
+        [ForeignKey("AuthorId")]
+        public AuthorViewModel Author { get; set; }
     }
 }

@@ -3,23 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TrySimpleApi.Domain.Product.Entities;
-using TrySimpleApi.Infrastructure.Product.Interfaces;
+using TrySimpleApi.Infrastructure.Product.DataManagers;
 using TrySimpleApi.Helpers;
 
 namespace TrySimpleApi.Application.Product
 {
-    public class CreateProductService : IProductService
+    public class CreateProductService : ApplicationService , IProductService
     {
 
-        private readonly ProductContext _context;
         private static Random random = new Random();
 
-        public CreateProductService(ProductContext context)
-        {
-            _context = context;
-        }
+        public CreateProductService(ProductContext context) : base(context) { }
 
-        public async Task<object> Create(ProductModel model)
+        public async Task<object> Create(ProductEntity model)
         {
 
             try
@@ -28,7 +24,7 @@ namespace TrySimpleApi.Application.Product
                 model.CreatedAt = DateTime.Now;
                 _context.Add(model);
                 await _context.SaveChangesAsync();
-                return new { status = true, message = "Success create data"};
+                return new { status = true, message = "Success create data" , data = model };
             }
             catch(Exception err)
             {
